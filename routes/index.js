@@ -10,6 +10,8 @@ router.get('/', function(req, res, next) {
 router.post('/test', function(req, res) {
 	console.log("Post has been hit.");
 
+	console.log(req);
+
 	res.on('error', function(err) {
 		console.error(err);
 	});
@@ -19,7 +21,7 @@ router.post('/test', function(req, res) {
 
 	var responseBody = {
 		url: req.response_url,
-		text: req.text
+		text: "testing"
 	};
 
 	res.write(JSON.stringify(responseBody));
