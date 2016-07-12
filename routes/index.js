@@ -19,7 +19,7 @@ router.post('/test', function(req, res) {
 
 	var responseBody = {
 		url: req.response_url,
-		body: req.text
+		text: req.text
 	};
 
 	res.write(JSON.stringify(responseBody));
