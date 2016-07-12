@@ -4,25 +4,26 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	console.log("Index has been hit.");
-  res.render('index', { title: 'Express' });
+	res.render('index', { title: 'Express' });
 });
 
 router.post('/test', function(req, res) {
 	console.log("Post has been hit.");
+
+	res.on('error', function(err) {
+		console.error(err);
+	});
+
+	res.statusCode = 200;
+	res.setHeader('Content-Type', 'application/json');
+
+	var responseBody = {
+		url: req.response_url,
+		body: req.text
+	};
+
+	res.write(JSON.stringify(responseBody));
+	res.end();
 });
-
-
-// router.post('/adduser', function(req, res) {
-//     var db = req.db;
-//     var collection = db.get('userlist');
-//     collection.insert(req.body, function(err, result){
-//         res.send(
-//             (err === null) ? { msg: '' } : { msg: err }
-//         );
-//     });
-// });
-
-
-
 
 module.exports = router;
