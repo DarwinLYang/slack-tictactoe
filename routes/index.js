@@ -176,7 +176,7 @@ router.post('/tictactoe', function(req, res) {
 				if (tictactoe.gameRunning)
 				{
 					console.log("Next player's turn");
-					tictactoe.currentPlayer = (tictactoe.currentPlayer == player1) ? tictactoe.player2 : tictactoe.player1;
+					tictactoe.currentPlayer = (tictactoe.currentPlayer == tictactoe.player1) ? tictactoe.player2 : tictactoe.player1;
 					resText += "It's " + tictactoe.currentPlayer + "'s turn now.";
 
 				} else {
