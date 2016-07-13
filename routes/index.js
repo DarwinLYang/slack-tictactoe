@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var tictactoe = {gameRunning : false}, intial_board = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
+var tictactoe = {gameRunning : false, board : intial_board.slice()}, intial_board = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
 
 
 /* GET home page. */
@@ -30,7 +30,6 @@ router.post('/tictactoe', function(req, res) {
 		if (tictactoe.gameRunning)
 		{
 			console.log("Game is running");
-			tictactoe.currentPlayer = (tictactoe.currentPlayer == player1) ? tictactoe.player2 : tictactoe.player1;
 			resText += "It's " + tictactoe.currentPlayer + "'s turn now";
 
 		} else {
@@ -39,6 +38,7 @@ router.post('/tictactoe', function(req, res) {
 			else if ((tictactoe.winner == null) && tictactoe.turnNumber > 0) resText += "It was a tie!";
 			else resText += "Game over. " + tictactoe.winner + " was the winner!";
 		}
+		console.log("Leaving ");
 	} else if (!tictactoe.gameRunning) {
 		console.log("Game is starting a new game");
 		//TODO: Check if player 2 is valid
@@ -77,14 +77,19 @@ router.post('/tictactoe', function(req, res) {
 				var playerMoves;
 				if (tictactoe.currentPlayer == player1)
 				{
+					console.log("Current player is player 1");
 					tictactoe.player1Moves[arrayLocation] = true;
+					console.log("Player 1 move added to array");
 					tictactoe.playerMoves = tictactoe.player1Moves;
+					console.log("Player 1 move added to playerMoves variables");
 					tictactoe.board[arrayLocation] = 'X';
+					console.log("Player 1 move is on the board");
 				} else {
 					tictactoe.player2Moves[arrayLocation] = true;
 					tictactoe.playerMoves = tictactoe.player2Moves;
 					tictactoe.board[arrayLocation] = 'O';
 				}
+				console.log("Player moved");
 				tictactoe.turnNumber++;
 
 				console.log("Checking for wins");
