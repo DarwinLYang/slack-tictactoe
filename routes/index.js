@@ -18,21 +18,14 @@ router.post('/tictactoe', function(req, res) {
 	res.statusCode = 200;
 	res.setHeader('Content-Type', 'application/json');
 
-	// if (text == 'player1') {
-	// 	resText = "Player 1: " + tictactoe.player1;
-	// } else if (text == 'player2') {
-	// 	resText = "Player 2: " + tictactoe.player2;
-	// } else if (text == 'winner') {
-	// 	resText = "Winner: " + tictactoe.winner;
-	// } else if (text == 'displayboard') {
 	console.log("Action based on: " + text);
 	if (text == 'board') {
 		console.log("Displaying board");
-		resText = " " + tictactoe.board[0] + " | " + tictactoe.board[1] + " | " + tictactoe.board[2] + "\n" +
-					"-----------\n" + 
-					" " + tictactoe.board[3] + " | " + tictactoe.board[4] + " | " + tictactoe.board[5] + "\n" +
-					"-----------\n" + 
-					" " + tictactoe.board[6] + " | " + tictactoe.board[7] + " | " + tictactoe.board[8] + "\n";
+		resText = " " + tictactoe.board[0] + " | " + tictactoe.board[1] + " | " + tictactoe.board[2] + "\n"
+				+ "-----------\n"
+				+ " " + tictactoe.board[3] + " | " + tictactoe.board[4] + " | " + tictactoe.board[5] + "\n"
+				+ "-----------\n"
+				+ " " + tictactoe.board[6] + " | " + tictactoe.board[7] + " | " + tictactoe.board[8] + "\n";
 
 		if (tictactoe.gameRunning)
 		{
@@ -169,11 +162,11 @@ router.post('/tictactoe', function(req, res) {
 					tictactoe.gameRunning = false;
 				}
 
-				resText = " " + tictactoe.board[0] + " | " + tictactoe.board[1] + " | " + tictactoe.board[2] + "\n" +
-							"-----------\n" + 
-							" " + tictactoe.board[3] + " | " + tictactoe.board[4] + " | " + tictactoe.board[5] + "\n" +
-							"-----------\n" + 
-							" " + tictactoe.board[6] + " | " + tictactoe.board[7] + " | " + tictactoe.board[8] + "\n";
+				resText = " " + tictactoe.board[0] + " | " + tictactoe.board[1] + " | " + tictactoe.board[2] + "\n"
+						+ "-----------\n"
+						+ " " + tictactoe.board[3] + " | " + tictactoe.board[4] + " | " + tictactoe.board[5] + "\n"
+						+ "-----------\n"
+						+ " " + tictactoe.board[6] + " | " + tictactoe.board[7] + " | " + tictactoe.board[8] + "\n";
 
 				if (tictactoe.gameRunning)
 				{
@@ -192,6 +185,15 @@ router.post('/tictactoe', function(req, res) {
 	}
 
 	console.log("Sending response");
+	console.log("Tictactoe Object: ");
+	console.log("player1: " + tictactoe.player1);
+	console.log("player2: " + tictactoe.player2);
+	console.log("currentPlayer: " + tictactoe.currentPlayer);
+	console.log("board: \n" + tictactoe.board);
+	console.log("turnNumber: " + tictactoe.turnNumber);
+	console.log("gameRunning: " + tictactoe.gameRunning);
+	console.log("winner: " + tictactoe.winner);
+
 	resBody.text = resText;
 	res.write(JSON.stringify(resBody));
 	res.end();
