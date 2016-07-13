@@ -5,7 +5,7 @@ var https = require('https');
 var intial_board = ["    ", "    ", "    ", "    ", "    ", "    ", "    ", "    ", "    "], tictactoe = {gameRunning : false, board : intial_board.slice()};
 var options = {
 	host: 'slack.com',
-	path: '/api/users.list?token=xoxp-57768122293-57714427315-59444691250-5434bd1cae'
+	path: '/api/users.list?token='
 };
 
 router.post('/tictactoe', function(req, res) {
