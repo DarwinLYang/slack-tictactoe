@@ -8,11 +8,6 @@ var options = {
 	path: '/api/users.list?token=xoxp-57768122293-57714427315-59444691250-5434bd1cae'
 };
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-	res.render('index', { title: 'Express' });
-});
-
 router.post('/tictactoe', function(req, res) {
 	var text = req.body.text;
 	var resBody = { url: req.response_url };
