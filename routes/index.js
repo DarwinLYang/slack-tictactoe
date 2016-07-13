@@ -193,7 +193,7 @@ router.post('/tictactoe', function(req, res) {
 					resBody.text += "It's " + tictactoe.currentPlayer + "'s turn now.";
 
 				} else {
-					if (tictactoe.winner == null) resBody.text += "Game over. It's a tie!";
+					if (tictactoe.winner == '') resBody.text += "Game over. It's a tie!";
 					else resBody.text += "Game over. " + tictactoe.winner + " is the winner!";
 				}
 				resBody.response_type = "in_channel";
