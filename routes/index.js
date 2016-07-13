@@ -1,8 +1,13 @@
 var express = require('express');
 var router = express.Router();
+var https = require('https');
 
-var intial_board = ["%20%20%20%20", "    ", "    ", "    ", "    ", "    ", "    ", "    ", "    "], tictactoe = {gameRunning : false, board : intial_board.slice()};
-
+var intial_board = ["    ", "    ", "    ", "    ", "    ", "    ", "    ", "    ", "    "], tictactoe = {gameRunning : false, board : intial_board.slice()};
+var options = {
+	host: 'slack.com',
+	path: '/api/users.list?token=xoxp-57768122293-57714427315-59167272240-50f0b4c587',
+	method: 'GET'
+};
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -39,27 +44,75 @@ router.post('/tictactoe', function(req, res) {
 			else resText += "Game over. " + tictactoe.winner + " was the winner!";
 		}
 		console.log("Leaving ");
+
+		console.log("Sending response");
+		console.log("Tictactoe Object: ");
+		console.log("player1: " + tictactoe.player1);
+		console.log("player2: " + tictactoe.player2);
+		console.log("currentPlayer: " + tictactoe.currentPlayer);
+		console.log("board: \n" + tictactoe.board);
+		console.log("turnNumber: " + tictactoe.turnNumber);
+		console.log("gameRunning: " + tictactoe.gameRunning);
+		console.log("winner: " + tictactoe.winner);
+
+		resBody.text = resText;
+		res.write(JSON.stringify(resBody));
+		res.end();
+
+
+
 	} else if (!tictactoe.gameRunning) {
-		console.log("Game is starting a new game");
-		//TODO: Check if player 2 is valid
-		
+		console.log("Starting a new game");
 
-		console.log("Player 2 verified");
+		if (req.body.user_name == req.body.text)
+		{
+			resBody.text = "You cannot challenge yourself. Sorry";
+			res.write(JSON.stringify(resBody));
+			res.end();
+		} else {
+			https.request(options, function(response) {
+			var members = [];
+			var str = ''
+			response.on('data', function (chunk) {
+				str += chunk;
+			});
 
-		tictactoe = {
-			player1 : req.body.user_name,
-			player2 : req.body.text,
-			currentPlayer : req.body.user_name,
-			player1Moves : new Array(9),
-			player2Moves : new Array(9),
-			board : intial_board.slice(),
-			turnNumber : 0,
-			gameRunning : true,
-			winner : ''
-		};
+			response.on('end', function () {
+				console.log(str);
+				var obj = JSON.parse(str);
+				obj.members.forEach(function(member) {
+					members.push(member.name);
+				})
 
-		resText = tictactoe.player1 + " has challenged " + tictactoe.player2 + " to a tic-tac-toe game.\n" + tictactoe.player1 + " may make the first move!";
-	} else if (tictactoe.gameRunning) {
+				if (members.indexOf(req.body.text) == -1)
+				{
+					resText = req.body.text + " is not in this channel.";
+				} else {
+					console.log("Player 2 verified");
+
+					tictactoe = {
+						player1 : req.body.user_name,
+						player2 : req.body.text,
+						currentPlayer : req.body.user_name,
+						player1Moves : new Array(9),
+						player2Moves : new Array(9),
+						board : intial_board.slice(),
+						turnNumber : 0,
+						gameRunning : true,
+						winner : ''
+					};
+
+					resBody.response_type = "in_channel";
+					resText = tictactoe.player1 + " has challenged " + tictactoe.player2 + " to a tic-tac-toe game.\n" + tictactoe.player1 + " may make the first move!";
+				}
+				resBody.text = resText;
+				res.write(JSON.stringify(resBody));
+				res.end();
+
+				});
+			}).end();
+		}
+	} else {
 		console.log("Game continuing existing game");
 		if (tictactoe.currentPlayer == req.body.user_name) {
 			console.log("Current player is correct check");
@@ -192,21 +245,36 @@ router.post('/tictactoe', function(req, res) {
 			}
 		}
 		else resText = "Sorry, it is not your turn.";
+
+		console.log("Sending response");
+		console.log("Tictactoe Object: ");
+		console.log("player1: " + tictactoe.player1);
+		console.log("player2: " + tictactoe.player2);
+		console.log("currentPlayer: " + tictactoe.currentPlayer);
+		console.log("board: \n" + tictactoe.board);
+		console.log("turnNumber: " + tictactoe.turnNumber);
+		console.log("gameRunning: " + tictactoe.gameRunning);
+		console.log("winner: " + tictactoe.winner);
+
+		resBody.text = resText;
+		res.write(JSON.stringify(resBody));
+		res.end();
+
 	}
 
-	console.log("Sending response");
-	console.log("Tictactoe Object: ");
-	console.log("player1: " + tictactoe.player1);
-	console.log("player2: " + tictactoe.player2);
-	console.log("currentPlayer: " + tictactoe.currentPlayer);
-	console.log("board: \n" + tictactoe.board);
-	console.log("turnNumber: " + tictactoe.turnNumber);
-	console.log("gameRunning: " + tictactoe.gameRunning);
-	console.log("winner: " + tictactoe.winner);
+	// console.log("Sending response");
+	// console.log("Tictactoe Object: ");
+	// console.log("player1: " + tictactoe.player1);
+	// console.log("player2: " + tictactoe.player2);
+	// console.log("currentPlayer: " + tictactoe.currentPlayer);
+	// console.log("board: \n" + tictactoe.board);
+	// console.log("turnNumber: " + tictactoe.turnNumber);
+	// console.log("gameRunning: " + tictactoe.gameRunning);
+	// console.log("winner: " + tictactoe.winner);
 
-	resBody.text = resText;
-	res.write(JSON.stringify(resBody));
-	res.end();
+	// resBody.text = resText;
+	// res.write(JSON.stringify(resBody));
+	// res.end();
 });
 
 router.post('/test', function(req, res) {
