@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var tictactoe = {gameRunning : false, board : intial_board.slice()}, intial_board = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
+var intial_board = [" ", " ", " ", " ", " ", " ", " ", " ", " "], tictactoe = {gameRunning : false, board : intial_board.slice()};
 
 
 /* GET home page. */
