@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var intial_board = [" ", " ", " ", " ", " ", " ", " ", " ", " "], tictactoe = {gameRunning : false, board : intial_board.slice()};
+var intial_board = ["    ", "    ", "    ", "    ", "    ", "    ", "    ", "    ", "    "], tictactoe = {gameRunning : false, board : intial_board.slice()};
 
 
 /* GET home page. */
@@ -22,9 +22,9 @@ router.post('/tictactoe', function(req, res) {
 	if (text == 'board') {
 		console.log("Displaying board");
 		resText = " " + tictactoe.board[0] + " | " + tictactoe.board[1] + " | " + tictactoe.board[2] + "\n"
-				+ "-----------\n"
+				+ "-------------\n"
 				+ " " + tictactoe.board[3] + " | " + tictactoe.board[4] + " | " + tictactoe.board[5] + "\n"
-				+ "-----------\n"
+				+ "-------------\n"
 				+ " " + tictactoe.board[6] + " | " + tictactoe.board[7] + " | " + tictactoe.board[8] + "\n";
 
 		if (tictactoe.gameRunning)
@@ -34,8 +34,8 @@ router.post('/tictactoe', function(req, res) {
 
 		} else {
 			console.log("Game is not running");
-			if ((tictactoe.winner == null) && tictactoe.turnNumber == 0) resText += "A game has not been started yet.";
-			else if ((tictactoe.winner == null) && tictactoe.turnNumber > 0) resText += "It was a tie!";
+			if (!("winner" in tictactoe)) resText += "A game has not been started yet.";
+			else if (tictactoe.winner == '') resText += "It was a tie!";
 			else resText += "Game over. " + tictactoe.winner + " was the winner!";
 		}
 		console.log("Leaving ");
@@ -75,7 +75,7 @@ router.post('/tictactoe', function(req, res) {
 			} else {
 				console.log("Move is valid");
 				var playerMoves;
-				if (tictactoe.currentPlayer == player1)
+				if (tictactoe.currentPlayer == tictactoe.player1)
 				{
 					console.log("Current player is player 1");
 					tictactoe.player1Moves[arrayLocation] = true;
@@ -93,7 +93,7 @@ router.post('/tictactoe', function(req, res) {
 				tictactoe.turnNumber++;
 
 				console.log("Checking for wins");
-				if (turnNumber > 6) {
+				if (tictactoe.turnNumber > 5) {
 					switch(arrayLocation) {
 						case 0:
 							if ((playerMoves[1] && playerMoves[2]) || (playerMoves[3] && playerMoves[6]) || (playerMoves[4] && playerMoves[8]))
@@ -161,16 +161,16 @@ router.post('/tictactoe', function(req, res) {
 					}
 				}
 
-				if (turnNumber > 8)
+				if (tictactoe.turnNumber > 8)
 				{
 					console.log("Game has too many turns");
 					tictactoe.gameRunning = false;
 				}
 
 				resText = " " + tictactoe.board[0] + " | " + tictactoe.board[1] + " | " + tictactoe.board[2] + "\n"
-						+ "-----------\n"
+						+ "-------------\n"
 						+ " " + tictactoe.board[3] + " | " + tictactoe.board[4] + " | " + tictactoe.board[5] + "\n"
-						+ "-----------\n"
+						+ "-------------\n"
 						+ " " + tictactoe.board[6] + " | " + tictactoe.board[7] + " | " + tictactoe.board[8] + "\n";
 
 				if (tictactoe.gameRunning)
