@@ -79,7 +79,7 @@ router.post('/tictactoe', function(req, res) {
 					+ "           -----------\n"
 					+ "[B]    " + tictactoe.board[3] + " | " + tictactoe.board[4] + " | " + tictactoe.board[5] + "\n"
 					+ "           -----------\n"
-					+ "[C]    " + tictactoe.board[6] + " | " + tictactoe.board[7] + " | " + tictactoe.board[8] + "\n";
+					+ "[C]    " + tictactoe.board[6] + " | " + tictactoe.board[7] + " | " + tictactoe.board[8] + "\n"
 					+ tictactoe.player1 + " may make the first move!";
 				}
 				res.write(JSON.stringify(resBody));
@@ -90,7 +90,7 @@ router.post('/tictactoe', function(req, res) {
 	} else {
 		if (tictactoe.currentPlayer == req.body.user_name) {
 			var row = (text.charCodeAt(0) - 65), col = (text.charCodeAt(1) - 48);
-			
+			var arrayLocation = row*3 + col;
 			if (row < 0 ||
 				row > 2 ||
 				col < 0 ||
@@ -99,7 +99,6 @@ router.post('/tictactoe', function(req, res) {
 				tictactoe.player2Moves[arrayLocation] == true) {
 				resBody.text = "Move is not valid.";
 			} else {
-				var arrayLocation = row*3 + col;
 				var playerMoves;
 				if (tictactoe.currentPlayer == tictactoe.player1)
 				{
