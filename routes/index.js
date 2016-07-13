@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var intial_board = ["    ", "    ", "    ", "    ", "    ", "    ", "    ", "    ", "    "], tictactoe = {gameRunning : false, board : intial_board.slice()};
+var intial_board = ["%20%20%20%20", "    ", "    ", "    ", "    ", "    ", "    ", "    ", "    "], tictactoe = {gameRunning : false, board : intial_board.slice()};
 
 
 /* GET home page. */
@@ -188,6 +188,7 @@ router.post('/tictactoe', function(req, res) {
 					if (tictactoe.winner == null) resText += "Game over. It's a tie!";
 					else resText += "Game over. " + tictactoe.winner + " is the winner!";
 				}
+				resBody.response_type = "in_channel";
 			}
 		}
 		else resText = "Sorry, it is not your turn.";
