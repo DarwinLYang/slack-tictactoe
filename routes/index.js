@@ -64,36 +64,40 @@ router.post('/tictactoe', function(req, res) {
 		if (tictactoe.currentPlayer == req.body.user_name) {
 			console.log("Current player is correct check");
 
-			var arrayLocation = (text.charCodeAt(0) - 65) + (text.charCodeAt(1) - 48);
+			var row = (text.charCodeAt(0) - 65), col = (text.charCodeAt(1) - 48);
 			
-			if (arrayLocation < 0 ||
-				arrayLocation > 8 ||
+			if (row < 0 ||
+				row > 2 ||
+				col < 0 ||
+				col > 2 ||
 				tictactoe.player1Moves[arrayLocation] == true ||
 				tictactoe.player2Moves[arrayLocation] == true) {
 				console.log("Move is not valid");
 				resText = "Move is not valid.";
 			} else {
 				console.log("Move is valid");
+				var arrayLocation = row*3 + col;
 				var playerMoves;
 				if (tictactoe.currentPlayer == tictactoe.player1)
 				{
 					console.log("Current player is player 1");
 					tictactoe.player1Moves[arrayLocation] = true;
 					console.log("Player 1 move added to array");
-					tictactoe.playerMoves = tictactoe.player1Moves;
-					console.log("Player 1 move added to playerMoves variables");
+					playerMoves = tictactoe.player1Moves;
+					console.log("Player 1 move added to player moves variables");
 					tictactoe.board[arrayLocation] = 'X';
 					console.log("Player 1 move is on the board");
 				} else {
 					tictactoe.player2Moves[arrayLocation] = true;
-					tictactoe.playerMoves = tictactoe.player2Moves;
+					playerMoves = tictactoe.player2Moves;
 					tictactoe.board[arrayLocation] = 'O';
 				}
 				console.log("Player moved");
 				tictactoe.turnNumber++;
 
 				console.log("Checking for wins");
-				if (tictactoe.turnNumber > 5) {
+				if (tictactoe.turnNumber > 4) {
+					console.log("Entering switch case");
 					switch(arrayLocation) {
 						case 0:
 							if ((playerMoves[1] && playerMoves[2]) || (playerMoves[3] && playerMoves[6]) || (playerMoves[4] && playerMoves[8]))
